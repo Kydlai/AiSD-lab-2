@@ -4,5 +4,16 @@
 
 #include <iostream>
 #include <windows.h>
+#include <fstream>
+#include <string>
+#include <limits>
+
+void clearInputBuffer();
+void inputManager();
+void errorMessage();
+bool repeatRequest();
+bool acceptRequest();
+void firstMethod();
+
 
 #endif

@@ -4,11 +4,10 @@ using namespace std;
 
 FileManager::FileManager() {
     fileName = "b.txt";
-    openFile();
 }
 
 void FileManager::openFile() {
-    stream = fstream(fileName, std::ios::in | std::ios::out);
+    stream = fstream(fileName, ios::in | ios::out);
     if (!stream.is_open())
         throw runtime_error("Файл " + fileName + " отсутствует либо нет прав на его чтение");
     return;
@@ -29,25 +28,70 @@ void FileManager::reopenStream() {
 }
 
 void FileManager::reopenStream(string name) {
+    string oldFileName = fileName;
     setFileName(name);
     stream.close();
-    openFile();
+    try {
+        openFile();
+    } catch (const exception& e) {
+        fileName = oldFileName;
+        openFile();
+        throw;
+    }
     return;
 }
 
 string FileManager::read() {
-    stream.seekp(0);
+    if(lastWasWrite){
+        cout << "read_pointer = 0\n";
+        stream.seekg(0);
+        lastWasWrite = !lastWasWrite;
+    }
     string data;
     if (!stream.eof())
         getline(stream, data);
     else 
         throw runtime_error("Конец файла");
+    cout << "Прочитана строка \"" << data << "\"\n";
     return data;
 }
 
 void FileManager::write(string data) {
-    stream.seekp(0);
+    if(!lastWasWrite){
+        cout << "write_pointer = 0\n";
+        stream.seekp(0);
+        lastWasWrite = !lastWasWrite;
+    }
     stream << data;
+    cout << "Записана строка \"" << data << "\"\n";
+    return;
+}
+
+int FileManager::countLines() { // Осторожно: обнуляет указатель чтения
+    if (count == -1){
+        stream.seekg(0);
+        int n = 0;
+        string data;
+        while(getline(stream, data))
+            n++;
+        reopenStream();
+        count = n;
+        return n;
+    } else return count;
+}
+
+void FileManager::deleteLastLines(int n){
+    vector<string> lines(count - n);
+    for(int i = 0; i < count - n; ++i)
+        lines[i] = read();
+    clearFile();
+    for(int i = 0; i < count - n; ++i)
+        write(lines[i] + "\n");
+}
+
+void FileManager::clearFile() {
+    stream.close();
+    stream = fstream(fileName, ios::in | ios::out | ios::trunc);
     return;
 }
 
