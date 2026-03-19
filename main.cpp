@@ -63,6 +63,7 @@ void firstMethod(){
         cin >> n;
         while(cin.fail()){
             cout << "Пожалуйста, введите корректное число: ";
+            clearInputBuffer();
             cin.clear();
             cin >> n;
         }
@@ -87,7 +88,7 @@ void secondMethod() {
     clearInputBuffer();
     cout << "Введите слово для поиска: ";
     string word;
-    cin >> word;
+    getline(cin, word);
     int result = 0;
     for(int i = 0; i < file.countLines(); ++i){ // Строка файла
         string line = file.read();
@@ -132,6 +133,8 @@ void fileSelection() {
 int main(){
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
+
+    cout << "Лабораторная работа №2\nВариант 12\nКудлай Никита\nВПР 21\n";
 
     inputManager();
     while(true){
