@@ -43,7 +43,7 @@ void FileManager::reopenStream(string name) {
 
 string FileManager::read() {
     if(lastWasWrite){
-        cout << "read_pointer = 0\n";
+        //cout << "read_pointer = 0\n";
         stream.seekg(0);
         lastWasWrite = !lastWasWrite;
     }
@@ -52,18 +52,18 @@ string FileManager::read() {
         getline(stream, data);
     else 
         throw runtime_error("Конец файла");
-    cout << "Прочитана строка \"" << data << "\"\n";
+    //cout << "Прочитана строка \"" << data << "\"\n";
     return data;
 }
 
 void FileManager::write(string data) {
     if(!lastWasWrite){
-        cout << "write_pointer = 0\n";
+        //cout << "write_pointer = 0\n";
         stream.seekp(0);
         lastWasWrite = !lastWasWrite;
     }
     stream << data;
-    cout << "Записана строка \"" << data << "\"\n";
+    //cout << "Записана строка \"" << data << "\"\n";
     return;
 }
 

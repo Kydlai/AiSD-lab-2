@@ -14,6 +14,7 @@ void errorMessage();
 bool repeatRequest();
 bool acceptRequest();
 void firstMethod();
-
+void secondMethod();
+void fileSelection();
 
 #endif
